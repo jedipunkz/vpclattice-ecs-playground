@@ -1,0 +1,24 @@
+flowchart TD
+ subgraph ECS["ECS Cluster: vpclattice-ecs-playground"]
+        ECSService["ECS Service :vpclattice-ecs-playground"]
+        Task["ECS Task: webserver"]
+  end
+ subgraph VPC["VPC: vpclattice-ecs-playground (10.0.0.0/16)"]
+    direction TB
+        ECS
+  end
+ subgraph VPCLattice["VPC Lattice"]
+        LatticeService["VPC Lattice Service: vpclattice-ecs-playground"]
+        Listener["Listener: http-80"]
+        TargetGroup["Target Group: vpclattice-ecs-playground"]
+  end
+ subgraph VPCLatticeSN["VPC Lattice Service Network"]
+    direction TB
+        VPCLattice
+  end
+    User["User"] -- HTTP Request --> LatticeService
+    LatticeService --> Listener
+    Listener --> TargetGroup
+    TargetGroup -- Forward Request --> ECSService
+    ECSService -- Run Task --> Task
+    VPC -- Associated with --> VPCLatticeSN

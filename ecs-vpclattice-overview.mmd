@@ -1,0 +1,16 @@
+graph LR
+  subgraph VPC1 [VPC 1]
+    VPC_Lattice_Service["VPC Lattice Service"]
+    ECS_Service["ECS Service"]
+    VPC_Lattice_Service --> ECS_Service
+  end
+  subgraph VPC2 [VPC 2]
+    EC2["EC2"]
+  end
+  subgraph VPC_Lattice_Service_Network [VPC Lattice Service Network]
+    direction TB
+  end
+  EC2 -->|VPC Lattice Target Group| ECS_Service
+  VPC_Lattice_Service_Network -.-> VPC1
+  VPC_Lattice_Service_Network -.-> VPC2
+
